@@ -1,0 +1,26 @@
+{
+  "name": "messaging-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_PATH=./src nodemon ./src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "joi": "13.4.0",
+    "jsonwebtoken": "8.3.0",
+    "koa": "2.5.2",
+    "koa-bodyparser": "4.2.1",
+    "koa-mount": "3.0.0",
+    "koa-router": "7.4.0",
+    "uuid": "3.3.2"
+  },
+  "devDependencies": {
+    "node-fetch": "2.1.2",
+    "nodemon": "1.18.3"
+  }
+}
