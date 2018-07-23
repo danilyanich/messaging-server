@@ -11,8 +11,10 @@ module.exports.signUp = async (ctx, next) => {
   const { username } = value;
 
   const presentUser = await userService.findByUsename(username);
-  ctx.assert(!presentUser, 400, 'Aleady signed up');
-
-  const user = await userService.create(username);
-  ctx.body = jwt.sign({ _id: user._id }, config.secret);
+  if (presentUser) {
+    ctx.body = jwt.sign({ _id: presentUser._id }, config.secret);
+  } else {
+    const user = await userService.create(username);
+    ctx.body = jwt.sign({ _id: user._id }, config.secret);
+  }
 };

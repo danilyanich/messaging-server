@@ -1,11 +1,11 @@
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
-
-const routes = require('./routes');
+const logger = require('koa-logger');
 
 const app = new Koa();
 
 app.use(bodyparser());
+app.use(logger());
 
 routes(app);
 
