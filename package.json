@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_PATH=./src nodemon ./src/app.js",
-    "prod": "NODE_PATH=./src node ./src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prod": "NODE_PATH=./src node ./src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -24,5 +23,9 @@
   "devDependencies": {
     "node-fetch": "2.1.2",
     "nodemon": "1.18.3"
+  },
+  "engines": {
+    "node": "10.5.0",
+    "npm": "6.2.0"
   }
 }
