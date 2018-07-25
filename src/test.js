@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const url = 'http://localhost:3000/';
+const url = 'https://powerful-temple-32295.herokuapp.com/';
 
 (async () => {
   const token = await fetch(`${url}auth/signUp`, {
