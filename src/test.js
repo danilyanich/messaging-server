@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 
-const url = 'https://powerful-temple-32295.herokuapp.com/';
+// const url = 'https://powerful-temple-32295.herokuapp.com/';
+const url = 'http://localhost:3000/';
 
 (async () => {
   const token = await fetch(`${url}auth/signUp`, {
@@ -8,7 +9,7 @@ const url = 'https://powerful-temple-32295.herokuapp.com/';
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username: 'dan' }),
+    body: JSON.stringify({ username: 'dan', password: '12345678' }),
   }).then(res => res.text());
 
   await fetch(`${url}auth/signUp`, {
@@ -16,85 +17,53 @@ const url = 'https://powerful-temple-32295.herokuapp.com/';
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username: 'alina' }),
-  });
-
-  await fetch(`${url}auth/signUp`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username: 'ivan' }),
-  });
+    body: JSON.stringify({ username: 'alina', password: '12345678' }),
+  }).then(res => res.text());
 
   const nextHeaders = {
     'Authorization': token,
     'Content-Type': 'application/json',
   }
 
-  const user = await fetch(`${url}user/me`, {
-    method: 'GET',
-    headers: nextHeaders,
-  }).then(res => res.json());
-  console.log(user);
-
-  const users = await fetch(`${url}user/`, {
-    method: 'GET',
-    headers: nextHeaders,
-  }).then(res => res.json());
-  console.log(users);
-
-
-
-  await fetch(`${url}message/newMessage`, {
-    method: 'POST',
-    headers: nextHeaders,
-    body: JSON.stringify({
-      to: users[1]._id,
-      text: 'Hello',
-    })
-  });
-  await fetch(`${url}message/newMessage`, {
-    method: 'POST',
-    headers: nextHeaders,
-    body: JSON.stringify({
-      to: users[1]._id,
-      text: 'How',
-    })
-  });
-  await fetch(`${url}message/newMessage`, {
-    method: 'POST',
-    headers: nextHeaders,
-    body: JSON.stringify({
-      to: users[1]._id,
-      text: 'Are',
-    })
-  })
-  await fetch(`${url}message/newMessage`, {
-    method: 'POST',
-    headers: nextHeaders,
-    body: JSON.stringify({
-      to: users[1]._id,
-      text: 'You?',
-    })
-  });
-
-  const messages = await fetch(`${url}message/${users[1]._id}`, {
+  const user = await fetch(`${url}users/me`, {
     method: 'GET',
     headers: nextHeaders,
   }).then(res => res.json());
 
-  console.log(messages);
+  console.log('me', user._id, user.username);
 
-  await fetch(`${url}message/markAdRead/${users[1]._id}`, {
-    method: 'POST',
-    headers: nextHeaders,
-  });
-
-  const readMessages = await fetch(`${url}message/${users[1]._id}`, {
+  const users = await fetch(`${url}users`, {
     method: 'GET',
     headers: nextHeaders,
   }).then(res => res.json());
 
-  console.log(readMessages);
+  console.log('others', users.map(user => user.username));
+
+  await fetch(`${url}messages`, {
+    method: 'POST',
+    headers: nextHeaders,
+    body: JSON.stringify({
+      receiverId: users[1]._id,
+      message: `Hello ${users[1].username}`,
+    })
+  });
+
+  const messages = await fetch(`${url}messages?receiverId=${users[1]._id}`, {
+    method: 'GET',
+    headers: nextHeaders,
+  }).then(res => res.json());
+
+  console.log('mesages', messages);
+
+  await fetch(`${url}messages/markAdRead?senderId=${users[1]._id}`, {
+    method: 'POST',
+    headers: nextHeaders,
+  });
+
+  const readMessages = await fetch(`${url}messages?receiverId=${users[1]._id}`, {
+    method: 'GET',
+    headers: nextHeaders,
+  }).then(res => res.json());
+
+  console.log('readMessages', readMessages);
 })();

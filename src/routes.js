@@ -16,13 +16,13 @@ const authMiddleware = async (ctx, next) => {
     ctx.assert(token, 401, 'Invalid token');
     const { _id } = token;
 
-    const user = await userService.findById(_id);
+    const user = await userService.findOne(_id);
     ctx.assert(user, 404, 'Valid token, but no such user');
 
     ctx.state.user = user;
-
     return next();
   } catch (error) {
+    console.error(error);
     ctx.throw(400, error);
   }
 };
@@ -32,6 +32,6 @@ module.exports = (app) => {
 
   app.use(authMiddleware);
 
-  app.use(mount('/user', ...userResource.private));
-  app.use(mount('/message', ...messageResource.private));
+  app.use(mount('/users', ...userResource.private));
+  app.use(mount('/messages', ...messageResource.private));
 };

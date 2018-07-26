@@ -1,6 +1,12 @@
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
+const config = require('./serverConfig');
+
+const firebase = require('firebase');
+require("firebase/firestore");
+firebase.initializeApp(config.firebase);
+
 
 const routes = require('./routes');
 

@@ -1,11 +1,34 @@
 const userService = require('./user.service');
 
-module.exports.list = async (ctx, next) => {
-  ctx.body = await userService.list();
+module.exports.getById = async (ctx, next) => {
+  const { userId } = ctx.request.query;
+
+  const user = await userService.findOne(userId);
+
+  ctx.body = {
+    _id: user._id,
+    username: user.username
+  };
 };
 
 module.exports.getMe = async (ctx, next) => {
-  const currentUser = ctx.state.user;
+  const { _id: currentUserId } = ctx.state.user;
 
-  ctx.body = await userService.findById(currentUser._id);
+  const user = await userService.findOne(currentUserId);
+
+  ctx.body = {
+    _id: user._id,
+    username: user.username,
+  };
+};
+
+module.exports.list = async (ctx, next) => {
+  const users = await userService.find();
+
+  const cleanUsers = users.map(user => ({
+    _id: user._id,
+    username: user.username,
+  }));
+
+  ctx.body = cleanUsers;
 };
