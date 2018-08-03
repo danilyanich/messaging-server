@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
+const cors = require('@koa/cors');
 const config = require('./serverConfig');
 
 const firebase = require('firebase');
@@ -12,6 +13,7 @@ const routes = require('./routes');
 
 const app = new Koa();
 
+app.use(cors());
 app.use(bodyparser());
 app.use(logger());
 

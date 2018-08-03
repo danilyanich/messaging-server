@@ -7,6 +7,15 @@ const authResource = require('resources/auth');
 const userResource = require('resources/user');
 const messageResource = require('resources/message');
 
+const errorHandlerMiddleWare = async (ctx, next) => {
+  try {
+    await next();
+  } catch (error) {
+    console.error(error);
+    ctx.throw(400, error);
+  }
+};
+
 const authMiddleware = async (ctx, next) => {
   const authHeader = ctx.request.header.authorization;
   ctx.assert(authHeader, 400, 'No authorization header present');
@@ -28,6 +37,8 @@ const authMiddleware = async (ctx, next) => {
 };
 
 module.exports = (app) => {
+  app.use(errorHandlerMiddleWare);
+
   app.use(mount('/auth', ...authResource.public));
 
   app.use(authMiddleware);
